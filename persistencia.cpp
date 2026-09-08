@@ -3,10 +3,9 @@
 #include <sstream>
 #include <iostream>
 
-// Formato de cada archivo: campos separados por '|', un registro por línea.
-// estudiantes.txt -> carnet|nombre|apellido
-// cursos.txt      -> codigo|nombre|notaMinimaAprobacion
-// notas.txt       -> carnetEstudiante|codigoCurso|nota
+// En estudiantes.txt  va carnet|nombre|apellido
+// En cursos.txt va codigo|nombre|notaMinimaAprobacion
+// En notas.txt va carnetEstudiante|codigoCurso|nota
 
 static bool separarLinea(const std::string &linea, std::string partes[], int cantidadPartes)
 {
