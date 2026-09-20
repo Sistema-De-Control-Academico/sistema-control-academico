@@ -4,7 +4,7 @@
 #include "reportes.h"
 using namespace std;
 
-// ==Los codigos dE colores ==
+// ===== CODIGOS DE COLOR (ANSI) =====
 const string RESET     = "\033[0m";
 const string NEGRITA   = "\033[1m";
 const string GRIS      = "\033[100;97m";
@@ -14,7 +14,7 @@ const string VERDE     = "\033[92m";
 const string ROJO      = "\033[91m";
 const string BLANCO    = "\033[97m";
 
-// ==El  ENCABEZADO ==
+// ===== ENCABEZADO =====
 void mostrarEncabezado() {
     cout << GRIS;
     cout << "================================================" << RESET << endl;
@@ -31,20 +31,17 @@ void mostrarEncabezado() {
     cout << endl;
 }
 
-// == Determinar resultado ==
-string determinarResultado(double promedio) {
-    if (promedio >= 61) {
+// ===== Determinar resultado (usa la nota minima del curso) =====
+string determinarResultado(double promedio, double notaMinima) {
+    if (promedio >= notaMinima) {
         return "APROBADO";
     } else {
         return "REPROBADO";
     }
 }
 
-// == Reporte individual ==
-void mostrarReporteEstudiante(string nombre, double nota1, double nota2, double nota3) {
-    double promedio = (nota1 + nota2 + nota3) / 3;
-    string resultado = determinarResultado(promedio);
-
+// ===== Reporte individual (recibe promedio ya calculado) =====
+void mostrarReporteEstudiante(string nombre, double promedio, string resultado) {
     cout << GRIS;
     cout << "+------------------------------------------------+" << RESET << endl;
     cout << GRIS << "|" << RESET;
@@ -56,18 +53,6 @@ void mostrarReporteEstudiante(string nombre, double nota1, double nota2, double 
 
     cout << GRIS << "|" << RESET << BLANCO << "  Nombre:    "
          << CIAN << left << setw(30) << nombre
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Nota 1:    "
-         << AMARILLO << left << setw(30) << nota1
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Nota 2:    "
-         << AMARILLO << left << setw(30) << nota2
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Nota 3:    "
-         << AMARILLO << left << setw(30) << nota3
          << RESET << GRIS << "|" << RESET << endl;
 
     cout << GRIS << "|" << RESET << BLANCO << "  Promedio:  "
@@ -87,7 +72,7 @@ void mostrarReporteEstudiante(string nombre, double nota1, double nota2, double 
     cout << endl;
 }
 
-// == Reporte asi  general ==
+// ===== Reporte general del grupo =====
 void mostrarReporteGeneral(int total, int aprobados, int reprobados, double promedioGeneral) {
     cout << GRIS;
     cout << "+------------------------------------------------+" << RESET << endl;
