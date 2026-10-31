@@ -68,8 +68,7 @@ vcpkg_installed/
 Testing/
 .cache/
 
-# Archivos propios de pruebas locales
-main_test.cpp
+# Datos generados por el programa
 estudiantes.txt
 cursos.txt
 notas.txt

@@ -3,9 +3,10 @@
 
 #include <string>
 
+// Capacidades definidas de los arreglos del sistema.
 const int MAX_ESTUDIANTES = 100;
-const int MAX_CURSOS = 50;
-const int MAX_NOTAS = 500;
+const int MAX_CURSOS = 20;
+const int MAX_NOTAS = MAX_ESTUDIANTES * MAX_CURSOS; // una nota por estudiante-curso
 
 struct Estudiante
 {
