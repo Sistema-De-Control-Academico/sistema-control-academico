@@ -67,3 +67,8 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# Datos generados por el programa
+estudiantes.txt
+cursos.txt
+notas.txt
