@@ -1,105 +1,82 @@
 #include <iostream>
-#include <string>
 #include <iomanip>
+#include <string>
 #include "reportes.h"
+#include "estructuras.h"
+#include "procesamiento.h"
+
 using namespace std;
 
-// ===== CODIGOS DE COLOR (ANSI) =====
-const string RESET     = "\033[0m";
-const string NEGRITA   = "\033[1m";
-const string GRIS      = "\033[100;97m";
-const string CIAN      = "\033[96m";
-const string AMARILLO  = "\033[93m";
-const string VERDE     = "\033[92m";
-const string ROJO      = "\033[91m";
-const string BLANCO    = "\033[97m";
-
-// ===== ENCABEZADO =====
+// 1. Encabezado del sistema
 void mostrarEncabezado() {
-    cout << GRIS;
-    cout << "================================================" << RESET << endl;
-    cout << GRIS << "|" << RESET;
-    cout << CIAN << NEGRITA
-         << "           REPORTE ACADEMICO                  "
-         << RESET << GRIS << "|" << RESET << endl;
-    cout << GRIS << "|" << RESET;
-    cout << BLANCO
-         << "           Sistema de Control de Notas        "
-         << RESET << GRIS << "|" << RESET << endl;
-    cout << GRIS;
-    cout << "================================================" << RESET << endl;
-    cout << endl;
+    cout << "\n==================================================\n";
+    cout << "             REPORTE ACADEMICO                    \n";
+    cout << "     Sistema de Control de Notas - UMG            \n";
+    cout << "==================================================\n";
 }
 
-// ===== Determinar resultado (usa la nota minima del curso) =====
-string determinarResultado(double promedio, double notaMinima) {
-    if (promedio >= notaMinima) {
-        return "APROBADO";
-    } else {
-        return "REPROBADO";
-    }
+// 2. Reporte individual de un estudiante
+void mostrarReporteEstudiante(string nombreCompleto, double promedio, string resultado) {
+    cout << "--------------------------------------------------\n";
+    cout << " Estudiante: " << nombreCompleto << "\n";
+    cout << " Promedio:   " << fixed << setprecision(2) << promedio << "\n";
+    cout << " Resultado:  " << resultado << "\n";
+    cout << "--------------------------------------------------\n";
 }
 
-// ===== Reporte individual (recibe promedio ya calculado) =====
-void mostrarReporteEstudiante(string nombre, double promedio, string resultado) {
-    cout << GRIS;
-    cout << "+------------------------------------------------+" << RESET << endl;
-    cout << GRIS << "|" << RESET;
-    cout << AMARILLO << NEGRITA
-         << "           REPORTE DEL ESTUDIANTE               "
-         << RESET << GRIS << "|" << RESET << endl;
-    cout << GRIS;
-    cout << "+------------------------------------------------+" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Nombre:    "
-         << CIAN << left << setw(30) << nombre
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Promedio:  "
-         << CIAN << NEGRITA << left << setw(30) << promedio
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Resultado: ";
-    if (resultado == "APROBADO") {
-        cout << VERDE << NEGRITA << left << setw(30) << resultado;
-    } else {
-        cout << ROJO << NEGRITA << left << setw(30) << resultado;
-    }
-    cout << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS;
-    cout << "+------------------------------------------------+" << RESET << endl;
-    cout << endl;
-}
-
-// ===== Reporte general del grupo =====
+// 3. Reporte general del grupo
 void mostrarReporteGeneral(int total, int aprobados, int reprobados, double promedioGeneral) {
-    cout << GRIS;
-    cout << "+------------------------------------------------+" << RESET << endl;
-    cout << GRIS << "|" << RESET;
-    cout << AMARILLO << NEGRITA
-         << "          REPORTE GENERAL DEL GRUPO             "
-         << RESET << GRIS << "|" << RESET << endl;
-    cout << GRIS;
-    cout << "+------------------------------------------------+" << RESET << endl;
+    cout << "\n==================================================\n";
+    cout << "             RESUMEN GENERAL                      \n";
+    cout << "==================================================\n";
+    cout << " Total estudiantes : " << total << "\n";
+    cout << " Aprobados         : " << aprobados << "\n";
+    cout << " Reprobados        : " << reprobados << "\n";
+    cout << " Promedio general  : " << fixed << setprecision(2) << promedioGeneral << "\n";
+    cout << "==================================================\n\n";
+}
 
-    cout << GRIS << "|" << RESET << BLANCO << "  Total estudiantes:  "
-         << CIAN << left << setw(24) << total
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Aprobados:          "
-         << VERDE << left << setw(24) << aprobados
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Reprobados:         "
-         << ROJO << left << setw(24) << reprobados
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS << "|" << RESET << BLANCO << "  Promedio general:   "
-         << AMARILLO << left << setw(24) << promedioGeneral
-         << RESET << GRIS << "|" << RESET << endl;
-
-    cout << GRIS;
-    cout << "+------------------------------------------------+" << RESET << endl;
-    cout << endl;
+// 4. Función extra (Cadenas y Búsquedas)
+// Muestra el expediente completo de un estudiante buscándolo por su nombre o carnet.
+void mostrarExpedienteEstudiante(const Estudiante estudiantes[], int totalEst, 
+                                  const RegistroNota notas[], int totalNotas,
+                                  const Curso cursos[], int totalCursos, 
+                                  string busqueda) {
+    bool encontrado = false;
+    
+    for (int i = 0; i < totalEst; i++) {
+        string nombreCompleto = estudiantes[i].nombre + " " + estudiantes[i].apellido;
+        
+        // Búsqueda por carnet exacto o por nombre parcial (usando find)
+        if (estudiantes[i].carnet == busqueda || nombreCompleto.find(busqueda) != string::npos) {
+            encontrado = true;
+            cout << "\n==================================================\n";
+            cout << " EXPEDIENTE DEL ESTUDIANTE                        \n";
+            cout << "==================================================\n";
+            cout << " Nombre: " << nombreCompleto << "\n";
+            cout << " Carnet: " << estudiantes[i].carnet << "\n";
+            cout << "--------------------------------------------------\n";
+            cout << " Cursos y Notas:\n";
+            
+            for (int j = 0; j < totalNotas; j++) {
+                if (notas[j].carnetEstudiante == estudiantes[i].carnet) {
+                    string nombreCurso = notas[j].codigoCurso;
+                    // Buscar el nombre real del curso
+                    for (int k = 0; k < totalCursos; k++) {
+                        if (cursos[k].codigo == notas[j].codigoCurso) {
+                            nombreCurso = cursos[k].nombre;
+                            break;
+                        }
+                    }
+                    cout << "   - " << left << setw(20) << nombreCurso 
+                         << " | Nota: " << notas[j].nota << "\n";
+                }
+            }
+            cout << "==================================================\n";
+        }
+    }
+    
+    if (!encontrado) {
+        cout << "\n[!] No se encontro ningun estudiante con: " << busqueda << "\n";
+    }
 }
